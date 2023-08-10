@@ -49,6 +49,7 @@ def get_motor_log():
     # drop where location_x, location_y is na
     df = df.dropna(subset=['location_x', 'location_y'])
     select_cols = ['time', 'run_time', 'location_x', 'location_y', 'command_time']
+    df = df.sort_values(by='time')
     return df[select_cols].rename(columns={'command_time': 'duration'})
 
 
