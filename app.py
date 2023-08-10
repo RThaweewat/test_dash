@@ -28,6 +28,8 @@ def get_sensor_log():
     select_col = ['humidity', 'temperature', 'ldrValue', 'pirValue', 'time', 'rssi', 'soilValue', 'waterTemperature']
     # resample time to 1 sec
     df['time'] = pd.to_datetime(df['time'])
+    # drop where water temp is below 0
+    df = df[df['waterTemperature'] > 0]
     df = df.groupby(pd.Grouper(key='time', freq='1s')).mean(numeric_only=True).reset_index().bfill().ffill()
     return df[select_col]
 
@@ -79,7 +81,7 @@ def get_percent_diff(df_raw, target_col):
 col1.metric("Avg Temperature", round(df_raw['temperature'].mean()), get_percent_diff(df_raw, 'temperature'))
 col2.metric("Avg Humidity", round(df_raw['humidity'].mean()), get_percent_diff(df_raw, 'humidity'))
 col3.metric("Avg LDR", round(df_raw['ldrValue'].mean()), get_percent_diff(df_raw, 'ldrValue'))
-col4.metric("Avg Water Temperature", round(df_raw['waterTemperature'].mean()), get_percent_diff(df_raw, 'waterTemperature'))
+col4.metric("Avg Water Temp", round(df_raw['waterTemperature'].mean()), get_percent_diff(df_raw, 'waterTemperature'))
 col5.metric("Avg Soil Moisture", round(df_raw['soilValue'].mean()), get_percent_diff(df_raw, 'soilValue'))
 st.dataframe(get_motor_log().head(10))
 st.subheader(get_today_str())
