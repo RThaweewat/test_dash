@@ -72,15 +72,15 @@ def get_percent_diff(df_raw, target_col):
     except ZeroDivisionError:
         percent_diff = np.nan
 
-    return percent_diff
+    return str(round(percent_diff), 2)
 
 
 # Assume col1 is a Streamlit object that uses the metric method to display metrics on an app
-col1.metric("Avg Temperature", round(df_raw['temperature'].mean()), round(get_percent_diff(df_raw, 'temperature'), 2) + "%")
-col2.metric("Humidity", round(df_raw['humidity'].mean()), round(get_percent_diff(df_raw, 'humidity'), 2) + "%")
-col3.metric("Soil Moisture", round(df_raw['soilValue'].mean()), round(get_percent_diff(df_raw, 'soilValue'), 2) + "%")
-col4.metric("LDR", round(df_raw['ldrValue'].mean()), round(get_percent_diff(df_raw, 'ldrValue'), 2) + "%")
-col5.metric("Water Temperature", round(df_raw['waterTemperature'].mean()), round(get_percent_diff(df_raw, 'waterTemperature'), 2) + "%")
+col1.metric("Avg Temperature", round(df_raw['temperature'].mean()), get_percent_diff(df_raw, 'temperature') + "%")
+col2.metric("Humidity", round(df_raw['humidity'].mean()), get_percent_diff(df_raw, 'humidity') + "%")
+col3.metric("LDR", round(df_raw['ldrValue'].mean()), get_percent_diff(df_raw, 'ldrValue') + "%")
+col4.metric("Water Temperature", round(df_raw['waterTemperature'].mean()), get_percent_diff(df_raw, 'waterTemperature') + "%")
+col5.metric("Soil Moisture", round(df_raw['soilValue'].mean()), get_percent_diff(df_raw, 'soilValue') + "%")
 st.dataframe(get_motor_log().head(10))
 st.subheader(get_today_str())
 
