@@ -46,13 +46,14 @@ def get_motor_log():
     table = client.query(query=query, database="sensor_ytp", language="sql")
     # Convert to dataframe
     df = table.to_pandas().sort_values(by="time")
-    return df
+    select_cols = ['time', 'command_time', 'location_x', 'location_y', 'location_z', 'run_time']
+    return df[select_cols]
 
 
 df_raw = get_sensor_log()
+st.title("Eureka Dashboard")
 col1, col2, col3, col4, col5 = st.columns(5)
 # get avg temp and change in pass 5 mins
-st.title("Eureka Dashboard")
 
 
 def get_percent_diff(df_raw, target_col):
@@ -83,6 +84,8 @@ col2.metric("Avg Humidity", round(df_raw['humidity'].mean()), get_percent_diff(d
 col3.metric("Avg LDR", round(df_raw['ldrValue'].mean()), get_percent_diff(df_raw, 'ldrValue'))
 col4.metric("Avg Water Temp", round(df_raw['waterTemperature'].mean()), get_percent_diff(df_raw, 'waterTemperature'))
 col5.metric("Avg Soil Moisture", round(df_raw['soilValue'].mean()), get_percent_diff(df_raw, 'soilValue'))
+
+st.subheader("Water Schedule")
 st.dataframe(get_motor_log().head(10))
 st.subheader(get_today_str())
 
