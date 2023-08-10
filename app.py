@@ -24,7 +24,11 @@ def get_sensor_log():
     table = client.query(query=query, database="sensor_ytp", language="sql")
     # Convert to dataframe
     df = table.to_pandas().sort_values(by="time")
-    return df
+    select_col = ['humidity', 'temperature', 'IdrValue', 'pirValue', 'time', 'rssi', 'soilValue']
+    # resample time to 1 sec
+    df['time'] = pd.to_datetime(df['time'])
+    df = df.set_index('time').resample('1S').mean().reset_index()
+    return df[select_col]
 
 
 def get_motor_log():
@@ -42,7 +46,22 @@ def get_motor_log():
     return df
 
 
-st.dataframe(get_sensor_log().head(10))
+get_sensor_log()
+col1, col2, col3 = st.columns(3)
+
+with col1:
+
+
+with col2:
+    st.header("A dog")
+    st.image("https://static.streamlit.io/examples/dog.jpg")
+
+with col3:
+    st.header("An owl")
+    st.image("https://static.streamlit.io/examples/owl.jpg")
+
+
+st.dataframe(.head(10))
 st.dataframe(get_motor_log().head(10))
 st.subheader(get_today_str())
 st.title("Eureka Dashboard")
