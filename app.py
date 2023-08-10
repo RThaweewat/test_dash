@@ -27,7 +27,7 @@ def get_sensor_log():
 
 
 def get_motor_log():
-    token = "OZpKr76YbuNbXqIzPSkVeLTkghXJuX7oZJiy4iBjDfEYrwD6swbSW7gQbH4qQMAq-oD9lQEwTD3CRGZzt3ekDQ=="
+    token = "DTn62dB5pz-0oGvlXfbCJttObVR5dzQhLA4vcu2-qs8AVidQIeB643sbOBGjVix2zTZE9lpQX9eHRZQ5eA-F9g=="
     org = "ytp"
     host = "https://us-east-1-1.aws.cloud2.influxdata.com"
     client = InfluxDBClient3(host=host, token=token, org=org)
