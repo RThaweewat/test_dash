@@ -3,6 +3,7 @@ import time
 import streamlit as st
 from influxdb_client_3 import InfluxDBClient3, Point
 from streamlit_image_coordinates import streamlit_image_coordinates
+import pandas as pd
 
 
 def get_today_str():
@@ -20,7 +21,7 @@ def get_sensor_log():
     SELECT * 
     FROM 'sensor_port' 
     """
-    table = client.query(query=query, database="sensor_processed", language="sql")
+    table = client.query(query=query, database="sensor_ytp", language="sql")
     # Convert to dataframe
     df = table.to_pandas().sort_values(by="time")
     return df
@@ -35,7 +36,7 @@ def get_motor_log():
     SELECT * 
     FROM 'command'
     """
-    table = client.query(query=query, database="sensor_processed", language="sql")
+    table = client.query(query=query, database="sensor_ytp", language="sql")
     # Convert to dataframe
     df = table.to_pandas().sort_values(by="time")
     return df
