@@ -1,0 +1,4 @@
+SELECT *
+FROM "sensor_port"
+WHERE
+time >= now() - interval '1 day'
