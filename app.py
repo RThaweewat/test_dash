@@ -30,6 +30,8 @@ def get_sensor_log():
     df['time'] = pd.to_datetime(df['time'])
     # drop where water temp is below 0
     df = df[df['waterTemperature'] > 0]
+    # filter time 1 days ago
+    df = df[df['time'] > pd.to_datetime('now') - pd.Timedelta(days=1)]
     df = df.groupby(pd.Grouper(key='time', freq='1s')).mean(numeric_only=True).reset_index().bfill().ffill()
     return df[select_col]
 
@@ -90,3 +92,5 @@ col5.metric("Avg Soil Moisture", round(df_raw['soilValue'].mean()), str(get_perc
 
 st.subheader("Water Schedule")
 st.dataframe(get_motor_log().head(10), use_container_width=True)
+
+#%%
