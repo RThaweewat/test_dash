@@ -20,7 +20,7 @@ def get_sensor_log():
     SELECT * 
     FROM 'sensor_port' 
     """
-    table = client.query(query=query, database="sensor_processed", language="influxql")
+    table = client.query(query=query, database="sensor_processed", language="sql")
     # Convert to dataframe
     df = table.to_pandas().sort_values(by="time")
     return df
@@ -35,7 +35,7 @@ def get_motor_log():
     SELECT * 
     FROM 'command'
     """
-    table = client.query(query=query, database="sensor_processed", language="influxql")
+    table = client.query(query=query, database="sensor_processed", language="sql")
     # Convert to dataframe
     df = table.to_pandas().sort_values(by="time")
     return df
