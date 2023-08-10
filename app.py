@@ -72,7 +72,7 @@ def get_percent_diff(df_raw, target_col):
     except ZeroDivisionError:
         percent_diff = np.nan
 
-    return str(round(percent_diff), 2)
+    return str(round(percent_diff, 2))
 
 
 # Assume col1 is a Streamlit object that uses the metric method to display metrics on an app
