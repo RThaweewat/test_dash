@@ -27,7 +27,7 @@ def get_sensor_log():
     select_col = ['humidity', 'temperature', 'ldrValue', 'pirValue', 'time', 'rssi', 'soilValue']
     # resample time to 1 sec
     df['time'] = pd.to_datetime(df['time'])
-    df = df.set_index('time').resample('1S').mean().reset_index().bfill().ffill()
+    df = df.groupby(pd.Grouper(key='time', freq='1s')).mean(numeric_only=True).reset_index().bfill().ffill()
     return df[select_col]
 
 
