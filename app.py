@@ -49,7 +49,6 @@ def get_motor_log():
     # drop where location_x, location_y is na
     df = df.dropna(subset=['location_x', 'location_y'])
     select_cols = ['time', 'run_time', 'location_x', 'location_y', 'command_time']
-
     return df[select_cols].rename(columns={'command_time': 'duration'})
 
 
@@ -89,7 +88,7 @@ col4.metric("Avg Water Temp", round(df_raw['waterTemperature'].mean()), str(get_
 col5.metric("Avg Soil Moisture", round(df_raw['soilValue'].mean()), str(get_percent_diff(df_raw, 'soilValue')) + "%")
 
 st.subheader("Water Schedule")
-st.dataframe(get_motor_log().head(10))
+st.dataframe(get_motor_log().head(10), use_container_width=True)
 st.subheader(get_today_str())
 
 value = streamlit_image_coordinates("https://placekitten.com/200/300")
