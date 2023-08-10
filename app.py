@@ -11,7 +11,7 @@ def get_today_str():
     return f"{now.tm_year}-{now.tm_mon}-{now.tm_mday} {now.tm_hour}-{now.tm_min}"
 
 
-def get_dataset():
+def get_sensor_log():
     token = "OZpKr76YbuNbXqIzPSkVeLTkghXJuX7oZJiy4iBjDfEYrwD6swbSW7gQbH4qQMAq-oD9lQEwTD3CRGZzt3ekDQ=="
     org = "ytp"
     host = "https://us-east-1-1.aws.cloud2.influxdata.com"
@@ -23,7 +23,20 @@ def get_dataset():
     return df
 
 
-st.dataframe(get_dataset().head(10))
+def get_motor_log():
+    token = "OZpKr76YbuNbXqIzPSkVeLTkghXJuX7oZJiy4iBjDfEYrwD6swbSW7gQbH4qQMAq-oD9lQEwTD3CRGZzt3ekDQ=="
+    org = "ytp"
+    host = "https://us-east-1-1.aws.cloud2.influxdata.com"
+    client = InfluxDBClient3(host=host, token=token, org=org)
+    query = """SELECT * FROM "command" WHERE time >= now() - interval '1 day'"""
+    table = client.query(query=query, database="sensor_processed", language="influxql")
+    # Convert to dataframe
+    df = table.to_pandas().sort_values(by="time")
+    return df
+
+
+st.dataframe(get_sensor_log().head(10))
+st.dataframe(get_motor_log().head(10))
 st.subheader(get_today_str())
 st.title("Eureka Dashboard")
 value = streamlit_image_coordinates("https://placekitten.com/200/300")
