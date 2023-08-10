@@ -16,7 +16,11 @@ def get_sensor_log():
     org = "ytp"
     host = "https://us-east-1-1.aws.cloud2.influxdata.com"
     client = InfluxDBClient3(host=host, token=token, org=org)
-    query = """SELECT * FROM "sensor_port" WHERE time >= now() - interval '1 day'"""
+    query = """
+    SELECT * 
+    FROM 'sensor_port' 
+    WHERE time >= now() - interval '1 day'
+    """
     table = client.query(query=query, database="sensor_processed", language="influxql")
     # Convert to dataframe
     df = table.to_pandas().sort_values(by="time")
@@ -28,7 +32,11 @@ def get_motor_log():
     org = "ytp"
     host = "https://us-east-1-1.aws.cloud2.influxdata.com"
     client = InfluxDBClient3(host=host, token=token, org=org)
-    query = """SELECT * FROM "command" WHERE time >= now() - interval '1 day'"""
+    query = """
+    SELECT * 
+    FROM 'command' 
+    WHERE time >= now() - interval '1 day'
+    """
     table = client.query(query=query, database="sensor_processed", language="influxql")
     # Convert to dataframe
     df = table.to_pandas().sort_values(by="time")
