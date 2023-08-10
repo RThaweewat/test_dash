@@ -19,7 +19,6 @@ def get_sensor_log():
     query = """
     SELECT * 
     FROM 'sensor_port' 
-    WHERE time >= now() - interval '1 day'
     """
     table = client.query(query=query, database="sensor_processed", language="influxql")
     # Convert to dataframe
@@ -34,8 +33,7 @@ def get_motor_log():
     client = InfluxDBClient3(host=host, token=token, org=org)
     query = """
     SELECT * 
-    FROM 'command' 
-    WHERE time >= now() - interval '1 day'
+    FROM 'command'
     """
     table = client.query(query=query, database="sensor_processed", language="influxql")
     # Convert to dataframe
