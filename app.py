@@ -24,10 +24,10 @@ def get_sensor_log():
     table = client.query(query=query, database="sensor_ytp", language="sql")
     # Convert to dataframe
     df = table.to_pandas().sort_values(by="time")
-    select_col = ['humidity', 'temperature', 'IdrValue', 'pirValue', 'time', 'rssi', 'soilValue']
+    select_col = ['humidity', 'temperature', 'ldrValue', 'pirValue', 'time', 'rssi', 'soilValue']
     # resample time to 1 sec
     df['time'] = pd.to_datetime(df['time'])
-    df = df.set_index('time').resample('1S').mean().reset_index()
+    df = df.set_index('time').resample('1S').mean().reset_index().bfill().ffill()
     return df[select_col]
 
 
