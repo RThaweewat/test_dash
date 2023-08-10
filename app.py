@@ -46,22 +46,12 @@ def get_motor_log():
     return df
 
 
-get_sensor_log()
+df_raw = get_sensor_log()
 col1, col2, col3 = st.columns(3)
-
-with col1:
-
-
-with col2:
-    st.header("A dog")
-    st.image("https://static.streamlit.io/examples/dog.jpg")
-
-with col3:
-    st.header("An owl")
-    st.image("https://static.streamlit.io/examples/owl.jpg")
-
-
-st.dataframe(.head(10))
+# get avg temp and change in pass 5 mins
+col1.metric("Avg Temperature", df_raw['temperature'].mean(), df_raw.set_index('time').last('5T')['temperature'].diff().sum())
+col2.metric("Wind", "9 mph", "-8%")
+col3.metric("Humidity", "86%", "4%")
 st.dataframe(get_motor_log().head(10))
 st.subheader(get_today_str())
 st.title("Eureka Dashboard")
