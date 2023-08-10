@@ -78,7 +78,7 @@ def get_percent_diff(df_raw, target_col):
 # Assume col1 is a Streamlit object that uses the metric method to display metrics on an app
 col1.metric("Avg Temperature", round(df_raw['temperature'].mean()), get_percent_diff(df_raw, 'temperature'))
 col2.metric("Humidity", round(df_raw['humidity'].mean()), get_percent_diff(df_raw, 'humidity'))
-col3.metric("LDR", round(df_raw['ldrValue'].mean()), get_percent_diff(df_raw, 'ldrValue') + "%")
+col3.metric("LDR", round(df_raw['ldrValue'].mean()), get_percent_diff(df_raw, 'ldrValue'))
 col4.metric("Water Temperature", round(df_raw['waterTemperature'].mean()), get_percent_diff(df_raw, 'waterTemperature'))
 col5.metric("Soil Moisture", round(df_raw['soilValue'].mean()), get_percent_diff(df_raw, 'soilValue'))
 st.dataframe(get_motor_log().head(10))
