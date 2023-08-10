@@ -49,11 +49,12 @@ def get_motor_log():
 df_raw = get_sensor_log()
 col1, col2, col3 = st.columns(3)
 # get avg temp and change in pass 5 mins
-col1.metric("Avg Temperature", df_raw['temperature'].mean(), df_raw.set_index('time').last('5T')['temperature'].diff().sum())
+st.title("Eureka Dashboard")
+col1.metric("Avg Temperature", df_raw['temperature'].mean())
 col2.metric("Wind", "9 mph", "-8%")
 col3.metric("Humidity", "86%", "4%")
 st.dataframe(get_motor_log().head(10))
 st.subheader(get_today_str())
-st.title("Eureka Dashboard")
+
 value = streamlit_image_coordinates("https://placekitten.com/200/300")
 st.write(value)
