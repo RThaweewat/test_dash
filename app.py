@@ -4,6 +4,7 @@ import streamlit as st
 from influxdb_client_3 import InfluxDBClient3, Point
 from streamlit_image_coordinates import streamlit_image_coordinates
 import pandas as pd
+import numpy as np
 
 
 def get_today_str():
@@ -50,7 +51,28 @@ df_raw = get_sensor_log()
 col1, col2, col3 = st.columns(3)
 # get avg temp and change in pass 5 mins
 st.title("Eureka Dashboard")
-col1.metric("Avg Temperature", df_raw['temperature'].mean())
+
+# Calculate the average temperature and round it
+avg_temperature = round(df_raw.set_index('time')['temperature'].mean())
+
+# Assuming 'temperature' data is at a minute level
+last_minute_temperature = df_raw.set_index('time').last('1T')['temperature']
+
+# Calculate the percentage difference
+if len(last_minute_temperature) > 1:
+    percent_diff = ((last_minute_temperature[-1] - last_minute_temperature[0]) / last_minute_temperature[0]) * 100
+else: # You can't compute % diff if there is no change in time
+    percent_diff = np.nan
+
+# RuntimeError handling: If you try to compute % diff when last_minute_temperature[0] = 0
+try:
+    percent_diff = ((last_minute_temperature[-1] - last_minute_temperature[0]) / last_minute_temperature[0]) * 100
+except ZeroDivisionError:
+    percent_diff = np.nan
+    # handle the special case as you need
+
+# Assume col1 is a Streamlit object that uses the metric method to display metrics on an app
+col1.metric("Avg Temperature", round(df_raw['temperature'].mean()), percent_diff)
 col2.metric("Wind", "9 mph", "-8%")
 col3.metric("Humidity", "86%", "4%")
 st.dataframe(get_motor_log().head(10))
