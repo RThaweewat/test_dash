@@ -46,7 +46,7 @@ def get_motor_log():
     table = client.query(query=query, database="sensor_ytp", language="sql")
     # Convert to dataframe
     df = table.to_pandas().sort_values(by="time")
-    select_cols = ['time', 'command_time', 'location_x', 'location_y', 'location_z', 'run_time']
+    select_cols = ['time', 'command_time', 'location_x', 'location_y', 'run_time']
     return df[select_cols]
 
 
