@@ -90,7 +90,3 @@ col5.metric("Avg Soil Moisture", round(df_raw['soilValue'].mean()), str(get_perc
 
 st.subheader("Water Schedule")
 st.dataframe(get_motor_log().head(10), use_container_width=True)
-st.subheader(get_today_str())
-
-value = streamlit_image_coordinates("https://placekitten.com/200/300")
-st.write(value)
